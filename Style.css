@@ -1,0 +1,581 @@
+:root {
+    --body-gradient-blue: linear-gradient(to bottom,
+            hsl(214, 47%, 23%) 0%,
+            hsl(237, 49%, 15%) 100%);
+    --Rock: linear-gradient(hsl(349, 71%, 52%),
+            hsl(349, 70%, 56%));
+    --Paper: linear-gradient(hsl(230, 89%, 62%),
+            hsl(230, 89%, 65%));
+    --Scissors: linear-gradient(hsl(39, 89%, 49%),
+            hsl(40, 84%, 53%));
+    --dark-blue: hsl(237, 49%, 15%);
+}
+
+** {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+}
+
+body {
+    background: var(--body-gradient-blue);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Barlow Semi Condensed", serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+}
+
+.Head {
+    width: 60%;
+    height: 18vh;
+    margin: 5vh auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    outline: 2px solid white;
+    padding: 1rem;
+    border-radius: 15px;
+    transition: all .3s ease;
+}
+
+.GameTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: .3;
+}
+
+.Score {
+    width: 15vh;
+    height: 15vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10PX;
+    background-color: white;
+    color: var(--dark-blue);
+}
+
+.ScoreText {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+
+.Btn {
+    position: fixed;
+    bottom: 3vh;
+    right: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 120px;
+    height: 45px;
+    border: none;
+    padding: 0px 20px;
+    background: var(--dark-blue);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0px hsl(237, 49%, 25%);
+    transition-duration: .3s;
+}
+
+.svg {
+    width: 25px;
+    height: auto;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    fill: white;
+    transition-duration: .3s;
+}
+
+.Btn:hover {
+    color: transparent;
+}
+
+.Btn:hover svg {
+    right: 43%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    transition-duration: .3s;
+}
+
+.Btn:active {
+    transform: translate(3px, 3px);
+    transition-duration: .3s;
+    box-shadow: 2px 2px 0px hsl(237, 49%, 25%);
+}
+
+.RulesModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 80%;
+    /* Use relative units for responsiveness */
+    max-width: 400px;
+    /* Set a max-width for larger screens */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+.RulesModalContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.RulesModalHeader {
+    display: flex;
+    justify-content: space-between;
+    /* Space between elements */
+    align-items: center;
+    padding: 1rem 2rem;
+    /* Add padding for spacing */
+    width: 90%;
+    color: var(--dark-blue);
+}
+
+.RulesModalHeader h2 {
+    margin: 0;
+    /* Remove default margin */
+}
+
+.CloseButton {
+    border: none;
+    background-color: transparent;
+    font-size: 1.5rem;
+    /* Adjust font size */
+    color: var(--dark-blue);
+    cursor: pointer;
+    opacity: .5;
+}
+
+
+
+.RulesModalBody {
+    margin: -2vh 0vh 2vh 0vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.RulesModalBody img {
+    width: 100%;
+    /* Make the image responsive */
+    height: auto;
+    max-width: 100%;
+}
+
+
+
+.Rock {
+    visibility: visible;
+    outline: 10px solid hsl(349, 71%, 52%);
+}
+
+/* Remove the left: 15vh from the .Rock class and handle positioning in specific classes */
+.UserChoice.Rock {
+    left: 15vh;
+}
+
+.Paper {
+    visibility: visible;
+    outline: 10px solid hsl(230, 89%, 62%);
+    top: 25vh;
+    right: 0;
+}
+
+.Paper.selected {
+    right: 22%;
+    top: 0;
+}
+
+.Scissors {
+    visibility: visible;
+    outline: 10px solid hsl(39, 89%, 49%);
+    right: 15vh;
+}
+
+
+
+.UserChoices {
+    width: 60%;
+    height: 30vh;
+    margin: 5vh auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+
+.UserChoices .UserChoice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    transition: 400ms;
+}
+
+.UserChoice:hover~.UserChoice,
+.UserChoice:not(:hover):has(~ .UserChoice:hover) {
+    filter: blur(10px);
+    transform: scale(0.9, 0.9);
+}
+
+/* Disable hover effects when game is in progress */
+.UserChoices.game-active .UserChoice:hover~.UserChoice,
+.UserChoices.game-active .UserChoice:not(:hover):has(~ .UserChoice:hover) {
+    filter: none;
+    transform: none;
+}
+
+.GameResult {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: none;
+    z-index: 100;
+    width: 100%;
+}
+
+.GameResult.visible {
+    display: block;
+}
+
+.GameResult h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.PlayAgain {
+    position: fixed;
+    left: 50%;
+    top: 65%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 100;
+}
+
+.PlayAgain.visible {
+    display: block;
+}
+
+.PlayAgainButton {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    background: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--dark-blue);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.PlayAgainButton:hover {
+    background: #f8f8f8;
+    transform: scale(1.05);
+}
+
+/* Add these styles at the bottom of the file */
+.UserChoice.selected {
+    position: fixed;
+    left: 24%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    scale: 1.5;
+    transition: all 0.5s ease;
+}
+
+.ComputerChoice {
+    position: fixed;
+    right: 20%;
+    top: 60%;
+    transform: translate(50%, -50%);
+    scale: 1.5;
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.HouseChoice {
+    position: fixed !important;
+    right: 24% !important;
+    top: 60% !important;
+    transform: translate(50%, -50%) !important;
+    scale: 1.5;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    z-index: 5;
+    /* Add z-index to ensure proper layering */
+}
+
+/* Override any inherited positioning for house choices */
+.HouseChoice.Rock,
+.HouseChoice.Paper,
+.HouseChoice.Scissors {
+    left: auto;
+    /* Reset any left positioning */
+    right: 24%;
+    /* Force right positioning */
+}
+
+.HouseChoice.Rock {
+    outline: 10px solid hsl(349, 71%, 52%);
+}
+
+.HouseChoice.Paper {
+    outline: 10px solid hsl(230, 89%, 62%);
+}
+
+.HouseChoice.Scissors {
+    outline: 10px solid hsl(39, 89%, 49%);
+}
+
+.ComputerPickText {
+    position: absolute;
+    width: 200px;
+    right: 20.5%;
+    top: 35%;
+    transform: translate(50%, -50%);
+    text-align: center;
+
+    transition: opacity 0.5s ease;
+}
+
+.ComputerPickText.visible {
+    opacity: 1;
+}
+
+
+.UserPickText {
+    display: none;
+    position: absolute;
+    width: 111px;
+    left: 20.5%;
+    top: 35%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+}
+
+.ComputerPickText {
+    top: 35%;
+    right: 20.5%;
+    transform: translate(50%, -50%);
+}
+
+.UserPickText,
+.ComputerPickText {
+    display: none;
+    position: absolute;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 2;
+}
+
+.UserPickText.visible,
+.ComputerPickText.visible {
+    display: block;
+}
+
+.ScoreCounter {
+    font-size: 1.5rem;
+    font-weight: 700;
+
+}
+
+@media (max-width: 600px) {
+    .UserChoices {
+        width: 90%;
+        height: 40vh;
+        flex-wrap: wrap;
+        /* Allow wrapping for smaller screens */
+    }
+
+    .UserChoice {
+        height: 70px;
+        width: 70px;
+    }
+
+    .UserChoice.selected {
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+        scale: 1.2;
+        /* Adjust scaling */
+    }
+
+    .ComputerChoice {
+        right: 50%;
+        top: 40%;
+        transform: translate(50%, -50%);
+    }
+
+    .GameResult h2 {
+        font-size: 2rem;
+    }
+
+    .PlayAgainButton {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+        scale: .8;
+    }
+
+    .Scissors {
+        visibility: visible;
+        outline: 10px solid hsl(39, 89%, 49%);
+        right: 0vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .Head {
+        width: 40%;
+        height: auto;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        transition: all .3s ease;
+    }
+
+    .GameTitle {
+        text-align: center;
+    }
+
+    .Score {
+        width: 100px;
+        height: 100px;
+    }
+
+    .RulesModal {
+        width: 60%;
+        height: 60vh;
+        max-width: none;
+        border-radius: 10px;
+    }
+
+    .RulesModalHeader {
+        width: 80%;
+        padding: 2rem;
+        position: absolute;
+        top: 0;
+    }
+
+    .RulesModalBody {
+        margin: 0;
+        padding-top: 10vh;
+    }
+
+    .RulesModalBody img {
+        max-width: 100%;
+    }
+
+    .CloseButton {
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+    }
+
+    .UserChoice.selected {
+        left: 15% !important;
+        top: 75% !important;
+        scale: .9 !important;
+    }
+
+    .HouseChoice {
+        left: 59% !important;
+        top: 75% !important;
+        scale: .9 !important;
+    }
+
+    .GameResult {
+        top: 65%;
+    }
+
+    .PlayAgain {
+        top: 75%;
+    }
+
+    .UserPickText {
+        left: 11%;
+        top: 60%;
+        scale: .7;
+    }
+
+    .ComputerPickText {
+        right: 11%;
+        top: 60%;
+        scale: .7;
+    }
+
+    .Paper {
+        top: 10vh;
+    }
+
+    .UserChoice.Rock {
+        left: 0vh;
+        bottom: 10vh;
+    }
+
+    .Scissors {
+        right: 0vh;
+        bottom: 10vh;
+    }
+
+    .UserChoices {
+        width: 100%;
+    }
+}
+
+@media (max-width: 680px) {
+    .UserChoices .UserChoice {
+        scale: .7;
+    }
+}
+
+
+
+
+.attribution {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
